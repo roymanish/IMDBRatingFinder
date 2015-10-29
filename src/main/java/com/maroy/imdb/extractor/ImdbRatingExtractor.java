@@ -24,10 +24,10 @@ public class ImdbRatingExtractor {
 	public static void main(String[] args) {
 
 		String url = "";
-		//String path = "C:\\Personal\\Personal\\Movies";
+		
 		String path = "";
 		
-		if(args[0] != null && !args[0].isEmpty()){
+		if(args != null && args.length != 0){
 			path = args[0];
 		}
 		else{
@@ -82,13 +82,20 @@ public class ImdbRatingExtractor {
 
 	private void writeResultsToFile(List<JSONObject> response) throws IOException,JSONException{
 		
-		FileInputStream file = new FileInputStream(new File("RatingsTemplate.xls"));
-        
+		FileOutputStream out = new FileOutputStream(new File("RatingsTemplate.xls"));
+		
 		//Get the workbook instance for XLS file 
-		HSSFWorkbook workbook = new HSSFWorkbook(file);
+		HSSFWorkbook workbook = new HSSFWorkbook();
 		 
 		//Get first sheet from the workbook
-		HSSFSheet sheet = workbook.getSheetAt(0);
+		HSSFSheet sheet = workbook.createSheet();
+		
+		Row headerRow = sheet.createRow(0);
+		Cell nameHdr = headerRow.createCell(0);
+		nameHdr.setCellValue("Movie Name");
+		
+		Cell ratingHdr = headerRow.createCell(1);
+		ratingHdr.setCellValue("Rating");
 		
 		int i=1;
 		for(JSONObject json : response){
@@ -102,9 +109,6 @@ public class ImdbRatingExtractor {
 			ratingCell.setCellValue(json.getString("imdbRating"));
 		}
 		
-		file.close();
-	    FileOutputStream out = 
-	        new FileOutputStream(new File("RatingsTemplate.xls"));
 	    workbook.write(out);
 	    out.close();
 	}
