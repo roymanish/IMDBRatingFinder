@@ -24,7 +24,15 @@ public class ImdbRatingExtractor {
 	public static void main(String[] args) {
 
 		String url = "";
-		String path = "C:\\Personal\\Personal\\Movies";
+		//String path = "C:\\Personal\\Personal\\Movies";
+		String path = "";
+		
+		if(args[0] != null && !args[0].isEmpty()){
+			path = args[0];
+		}
+		else{
+			System.exit(0);
+		}
 		ImdbRatingExtractor extractor = new ImdbRatingExtractor();
 		String[] movies = extractor.getListOfMovieNames(path);
 		
